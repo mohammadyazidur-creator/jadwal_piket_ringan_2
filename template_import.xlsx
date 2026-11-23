@@ -1,0 +1,61 @@
+<?php
+require_once 'lib/SimpleXLSX.php';
+
+// =============================================
+// DOWNLOAD TEMPLATE
+// =============================================
+if (isset($_GET['download_template'])) {
+    $file = 'template_import.xlsx';
+
+    if (file_exists($file)) {
+        header('Content-Description: File Transfer');
+        header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+        header('Content-Disposition: attachment; filename="template_import.xlsx"');
+        header('Content-Length: ' . filesize($file));
+        readfile($file);
+        exit;
+    } else {
+        echo "Template tidak ditemukan!";
+        exit;
+    }
+}
+
+// =============================================
+// IMPORT FILE EXCEL
+// =============================================
+if (isset($_POST['import'])) {
+
+    if (!isset($_FILES['file']['tmp_name']) || $_FILES['file']['tmp_name'] == '') {
+        echo "Tidak ada file yang diupload";
+        exit;
+    }
+
+    $xlsx = SimpleXLSX::parse($_FILES['file']['tmp_name']);
+
+    if (!$xlsx) {
+        echo "Gagal membaca file: " . SimpleXLSX::parseError();
+        exit;
+    }
+
+    $rows = $xlsx->rows();
+
+    // Lewati baris header (baris pertama)
+    $no = 0;
+
+    foreach ($rows as $r) {
+        $no++;
+        if ($no == 1) continue;
+
+        $nama  = $r[0] ?? '';
+        $kelas = $r[1] ?? '';
+        $nis   = $r[2] ?? '';
+
+        if ($nama == '') continue;
+
+        // ==== MASUKKAN KE DATABASE ====
+        $query = $koneksi->query("INSERT INTO siswa (nama, kelas, nis) VALUES ('$nama', '$kelas', '$nis')");
+    }
+
+    echo "<script>alert('Import berhasil!'); window.location='siswa.php';</script>";
+}
+?>

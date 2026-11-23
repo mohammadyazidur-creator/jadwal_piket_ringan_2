@@ -1,0 +1,11 @@
+{
+    "name": "user/jadwal_piket_ringan",
+    "autoload": {
+        "psr-4": {
+            "User\\JadwalPiketRingan\\": "src/"
+        }
+    },
+    "require": {
+        "phpoffice/phpspreadsheet": "^4.5"
+    }
+}

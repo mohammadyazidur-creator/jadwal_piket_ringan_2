@@ -1,0 +1,280 @@
+/* ========================================================
+   STRUKTUR CETAK - Gaya Khusus Halaman Cetak Struktur Organisasi
+   Mengikuti variabel warna dari style.css (:root)
+   ======================================================== */
+
+/* Panel Opsi Cetak (tersembunyi saat print) */
+.sc-opsi-panel {
+    background: var(--white);
+    border-radius: 16px;
+    border: 1px solid rgba(226, 232, 240, 0.85);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+}
+
+.sc-opsi-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 1rem;
+}
+
+.sc-opsi-group label {
+    display: block;
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--gray-medium);
+    margin-bottom: 0.35rem;
+}
+
+.sc-opsi-group select,
+.sc-opsi-group input[type="text"] {
+    width: 100%;
+    padding: 0.4rem 0.6rem;
+    border: 1px solid rgba(226, 232, 240, 0.85);
+    border-radius: 8px;
+    font-size: 0.85rem;
+    color: var(--gray-dark);
+    background: var(--white);
+}
+
+.sc-opsi-group select:focus,
+.sc-opsi-group input[type="text"]:focus {
+    outline: none;
+    border-color: var(--primary-blue);
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12);
+}
+
+.sc-opsi-toggle {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.85rem;
+    color: var(--gray-dark);
+    cursor: pointer;
+    user-select: none;
+}
+
+.sc-opsi-toggle input[type="checkbox"] {
+    accent-color: var(--primary-blue);
+    width: 16px;
+    height: 16px;
+}
+
+.sc-opsi-toggles {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem 1.5rem;
+    margin-top: 0.75rem;
+}
+
+.sc-opsi-ttd {
+    margin-top: 1rem;
+    padding-top: 1rem;
+    border-top: 1px solid rgba(226, 232, 240, 0.6);
+}
+
+/* Toolbar Aksi (Cetak / Kembali) */
+.sc-toolbar {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+    margin-bottom: 1rem;
+}
+
+/* Kontainer Pratinjau Kertas */
+.sc-paper-wrap {
+    display: flex;
+    justify-content: center;
+    padding: 1.5rem 0;
+}
+
+.sc-paper {
+    background: var(--white);
+    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.12);
+    position: relative;
+    overflow: hidden;
+    /* Ukuran default A4 Potret dalam mm -> diterjemahkan oleh JS */
+}
+
+.sc-paper-header {
+    text-align: center;
+    padding: 10mm 10mm 5mm 10mm;
+}
+
+.sc-paper-header h2 {
+    font-size: 16pt;
+    font-weight: 700;
+    color: var(--gray-dark);
+    margin: 0 0 2mm 0;
+}
+
+.sc-paper-header p {
+    font-size: 11pt;
+    color: var(--gray-medium);
+    margin: 0;
+}
+
+.sc-paper-date {
+    font-size: 9pt;
+    color: var(--gray-medium);
+    margin-top: 2mm;
+}
+
+/* Area Bagan di Dalam Kertas */
+.sc-bagan-area {
+    position: relative;
+    margin: 0 10mm 5mm 10mm;
+    overflow: hidden;
+}
+
+.sc-bagan-viewport {
+    position: relative;
+    transform-origin: 0 0;
+}
+
+.sc-bagan-svg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    overflow: visible;
+}
+
+/* Node di mode cetak: tidak ada hover effect */
+.sc-bagan-viewport .struktur-node {
+    cursor: default;
+    transition: none;
+}
+
+.sc-bagan-viewport .struktur-node:hover {
+    transform: none;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.06);
+}
+
+/* Grid opsional pada viewport cetak */
+.sc-bagan-viewport.sc-show-grid {
+    background-image: radial-gradient(rgba(37, 99, 235, 0.10) 1px, transparent 1px);
+    background-size: 24px 24px;
+}
+
+/* Blok Tanda Tangan */
+.sc-ttd-area {
+    display: flex;
+    justify-content: flex-end;
+    padding: 5mm 10mm 10mm 10mm;
+}
+
+.sc-ttd-blok {
+    text-align: center;
+    min-width: 50mm;
+}
+
+.sc-ttd-blok p {
+    margin: 0;
+    font-size: 10pt;
+    color: var(--gray-dark);
+}
+
+.sc-ttd-garis {
+    margin-top: 20mm;
+    border-bottom: 1px solid var(--gray-dark);
+    margin-bottom: 2mm;
+}
+
+/* Pesan Kosong */
+.sc-pesan-kosong {
+    text-align: center;
+    padding: 3rem 1rem;
+    color: var(--gray-medium);
+}
+
+.sc-pesan-kosong i {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+    color: var(--light-blue);
+}
+
+.sc-pesan-kosong h4 {
+    color: var(--gray-dark);
+    margin-bottom: 0.5rem;
+}
+
+/* Dropdown Pilih Bagan */
+.sc-pilih-bagan {
+    max-width: 360px;
+}
+
+/* ========================================================
+   CETAK / PRINT
+   ======================================================== */
+@media print {
+    /* Sembunyikan elemen UI */
+    .no-print,
+    .sc-opsi-panel,
+    .sc-toolbar,
+    .navbar,
+    .footer,
+    .content-wrapper {
+        display: none !important;
+    }
+
+    body {
+        margin: 0;
+        padding: 0;
+        background: white !important;
+    }
+
+    /* Kertas tampil penuh tanpa bayangan */
+    .sc-paper-wrap {
+        padding: 0;
+        display: block;
+    }
+
+    .sc-paper {
+        box-shadow: none;
+        margin: 0;
+        width: 100% !important;
+        height: auto !important;
+    }
+
+    /* Warna tercetak */
+    .sc-paper,
+    .sc-paper * {
+        print-color-adjust: exact;
+        -webkit-print-color-adjust: exact;
+    }
+
+    /* Node tidak boleh terpotong */
+    .struktur-node {
+        break-inside: avoid;
+        page-break-inside: avoid;
+    }
+}
+
+/* ========================================================
+   RESPONSIF MOBILE
+   ======================================================== */
+@media (max-width: 768px) {
+    .sc-opsi-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .sc-paper-wrap {
+        padding: 0.5rem 0;
+        overflow-x: auto;
+    }
+
+    .sc-toolbar {
+        justify-content: center;
+    }
+
+    .sc-opsi-toggles {
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+}
